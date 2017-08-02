@@ -15,16 +15,17 @@ class CreateSakeEventsTable extends Migration
     {
         Schema::create('sake_events', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code')->unique()->index();
-            $table->text('summary');
+            $table->string('code', 100)->unique()->index();
+            $table->text('summary')->nullable();
             $table->integer('prefecture_id')->index();
-            $table->string('location');
-            $table->text('description');
-            $table->timestamp('started_at')->index();
-            $table->timestamp('ended_at')->index();
+            $table->string('location')->nullable();
+            $table->text('description')->nullable();
+            $table->timestamp('started_at')->index()->nullable();
+            $table->timestamp('ended_at')->index()->nullable();
             $table->boolean('is_all_day');
             $table->boolean('is_recommended');
             $table->timestamps();
+            $table->index(['created_at', 'updated_at']);
         });
     }
 

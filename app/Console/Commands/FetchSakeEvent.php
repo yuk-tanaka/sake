@@ -27,8 +27,7 @@ class FetchSakeEvent extends Command
 
     private $client;
 
-    /** @var Collection $prefectures */
-    private $prefectures;
+    private $prefecture;
 
     private $sakeEvent;
 
@@ -44,7 +43,7 @@ class FetchSakeEvent extends Command
 
         $this->client = $client;
 
-        $this->prefectures = $prefecture->get();
+        $this->prefecture = $prefecture;
 
         $this->sakeEvent = $sakeEvent;
     }
@@ -86,18 +85,23 @@ class FetchSakeEvent extends Command
 
     /**
      * 住所から都道府県を判定して都道府県番号を返す
-     * @param string $location
+     * @param string|null $location
+     * @param Collection $prefectures ['県名' => id]の配列
      * @return int
      */
-    private function parsePrefecture(String $location)
+    private function parsePrefecture(?String $location, Collection $prefectures)
     {
+        if (is_null($location)) {
+            return Prefecture::UNKNOWN;
+        }
+
         $pattern = '/東京都|北海道|(?:大阪|京都)府|(?:三重|兵庫|千葉|埼玉|大分|奈良|岐阜|岩手|島根|新潟|栃木|沖縄|熊本|福井|秋田
         |群馬|長野|青森|高知|鳥取|(?:宮|長)崎|(?:宮|茨)城|(?:佐|滋)賀|(?:静|福)岡|山(?:口|形|梨)|愛(?:媛|知)|(?:石|香|神奈)川|
         (?:富|岡|和歌)山|(?:福|広|徳|鹿児)島)県/';
 
         $result = preg_match($pattern, $location, $matches) ? $matches[0] : Prefecture::UNKNOWN_NAME;
 
-        return $this->prefectures->where('name', $result)->get('id');
+        return $prefectures->get($result);
     }
 
     /**
@@ -105,22 +109,23 @@ class FetchSakeEvent extends Command
      */
     private function save(Collection $events)
     {
+        $prefectures = $this->prefecture->pluck('id', 'name');
+
         foreach ($events as $event) {
             $this->sakeEvent->updateOrCreate(
+                ['code' => $event['id']],
                 [
-                    ['code' => $event['id']],
-                    [
-                        'code' => $event['id'],
-                        'summary' => $event['summary'],
-                        'prefecture_id' => $this->parsePrefecture($event['location']),
-                        'location' => $event['location'],
-                        'description' => $event['description'],
-                        'started_at' => Carbon::parse($event['startDateTime']),
-                        'ended_at' => Carbon::parse($event['endDateTime']),
-                        'is_all_day' => $event['allDay'],
-                        'is_recommended' => $event['recommend'],
-                    ]
-                ]);
+                    'code' => $event['id'],
+                    'summary' => $event['summary'],
+                    'prefecture_id' => $this->parsePrefecture($event['location'], $prefectures),
+                    'location' => $event['location'],
+                    'description' => $event['description'],
+                    'started_at' => Carbon::parse($event['startDateTime']),
+                    'ended_at' => Carbon::parse($event['endDateTime']),
+                    'is_all_day' => $event['allDay'],
+                    'is_recommended' => $event['recommend'],
+                ]
+            );
         }
     }
 }
