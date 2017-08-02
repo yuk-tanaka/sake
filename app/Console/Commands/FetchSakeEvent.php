@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class FetchSakeEvent extends Command
 {
@@ -112,7 +113,7 @@ class FetchSakeEvent extends Command
         $prefectures = $this->prefecture->pluck('id', 'name');
 
         foreach ($events as $event) {
-            $this->sakeEvent->updateOrCreate(
+            $message[] = $this->sakeEvent->updateOrCreate(
                 ['code' => $event['id']],
                 [
                     'code' => $event['id'],
@@ -127,5 +128,7 @@ class FetchSakeEvent extends Command
                 ]
             );
         }
+
+        Log::info(count($message));
     }
 }

@@ -11,6 +11,5 @@
 |
 */
 
-Route::get('/', function () {
-
-});
+Route::get('/', 'EventController@index');
+Route::get('/{area}', 'EventController@area');

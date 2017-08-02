@@ -23,7 +23,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Route::pattern('area',
+            'hokkaido|tohoku|kanto|koshinetsu|hokuriku|tokai|kansai|chugoku|shikoku|kyusyu|okinawa');
 
         parent::boot();
     }

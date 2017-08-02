@@ -1,95 +1,84 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+@section('content')
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <h1 class="page-header">sakeEvent - {{config('sake.area_jp')[$area ?? '']}}</h1>
+        <div>
+          <ul>
+            <li><a href="http://nihonshucalendar.com/">日本酒カレンダー</a>のUIがいろいろキツイので突貫で作った。1時間に1回データ同期してます。</li>
+            <li>特に許可とかとってないんで怒られたらやめます。</li>
+            <li>そのうち<a href="http://craftbeer-tokyo.info/category/event/">クラフトビール東京</a>あたりの情報もfetchしたいところ。</li>
+            <li>苦情・要望は<a href="https://twitter.com/achel_b8">@achel_b8</a>まで。</li>
+          </ul>
         </div>
-    </body>
-</html>
+      </div>
+    </div>
+    <!-- event -->
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <!-- search -->
+            <form class="form-inline">
+              <label class="sr-only" for="date">date</label>
+              <div class="input-group @if($errors->first('date')) has-error @endif">
+                <div class="input-group-addon"><i class="fa fa-calendar-o"></i></div>
+                <input type="date" id="date" name="date" class="form-control"
+                       value="{{old('date', \Carbon\Carbon::today()->format('Y-m-d'))}}">
+              </div>
+              <button type="submit" class="btn btn-primary">日付で検索</button>
+            </form>
+          </div>
+          <!-- list -->
+          <div class="panel-body">
+            <div class="infinite-scroll">
+              @foreach($events as $event)
+                <h3 class="text-danger">{{$event->date}}</h3>
+                <span class="label label-danger">{{$event->prefecture->name}}</span>
+                @if($event->is_recommended)
+                  <span class="label label-primary">オススメ</span>
+                @endif
+                <h4><a href="http://nihonshucalendar.com/show_event.php?id={{$event->code}}">{{$event->summary}}</a>
+
+                </h4>
+                <h4>
+                  <i class="fa fa-fw fa-map-marker"></i>
+                  {{$event->location}}
+                  <a class="btn btn-sm btn-info"
+                     href="https://maps.google.co.jp/maps/search/{{$event->location}}">Map</a>
+                </h4>
+                <p>
+                  {{$event->shortDescription}}
+                </p>
+                <hr>
+              @endforeach
+              {{$events->appends(['date' => $date ?? null])->links()}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+@endsection
+
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.3.9/jquery.jscroll.min.js"></script>
+<script>
+  $('ul.pagination').hide();
+  $(function () {
+    $('.infinite-scroll').jscroll({
+      autoTrigger: true,
+      loadingHtml: '<p>loading…</p>',
+      padding: 0,
+      nextSelector: '.pagination li.active + li a',
+      contentSelector: 'div.infinite-scroll',
+      callback: function () {
+        $('ul.pagination').remove();
+      }
+    });
+  });
+</script>
+@endpush

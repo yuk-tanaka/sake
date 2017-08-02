@@ -111,16 +111,8 @@ class Prefecture extends Model
      */
     public function scopeKyusyu($query)
     {
-        return $query->whereIn('id', [40, 41, 42, 43, 44, 45, 46]);
+        return $query->whereIn('id', [40, 41, 42, 43, 44, 45, 46, 47]);
     }
 
-    /**
-     * @param Builder $query
-     * @return Builder
-     */
-    public function scopeOkinawa($query)
-    {
-        return $query->where('id', 47);
-    }
 
 }
