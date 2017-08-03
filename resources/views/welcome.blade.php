@@ -71,10 +71,14 @@
   $('.infinite-scroll').infinitescroll({
     loading: {
       finished: function () {
+        //load bar
+        $('#infscr-loading').remove();
+        $('.loading').remove();
+        //laravel pagination
         $('ul.pagination').hide();
       },
       finishedMsg: '<div class="end-msg">Congratulations!</div>',
-      msgText: '<div class="center">Loading...</div>'
+      msgText: '<div class="loading">Loading...</div>'
     },
     navSelector: '.pagination',
     nextSelector: '.pagination li.active + li a',
