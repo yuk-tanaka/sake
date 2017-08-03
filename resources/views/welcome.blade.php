@@ -37,8 +37,9 @@
               @foreach($events as $event)
                 <h3 class="text-danger">{{$event->date}}</h3>
                 <span class="label label-danger">{{$event->prefecture->name}}</span>
+                <span class="label {{$event->color}}">{{$event->type}}</span>
                 @if($event->is_recommended)
-                  <span class="label label-primary">オススメ</span>
+                  <span class="label label-success">オススメ</span>
                 @endif
                 <h4><a href="http://nihonshucalendar.com/show_event.php?id={{$event->code}}">{{$event->summary}}</a>
 

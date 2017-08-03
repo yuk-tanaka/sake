@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
-/** 
+/**
  * CRONはPHP5.6環境
  */
 class FetchSakeEvent extends Command
