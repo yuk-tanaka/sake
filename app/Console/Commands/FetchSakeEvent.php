@@ -10,6 +10,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
+/** 
+ * CRONはPHP5.6環境
+ */
 class FetchSakeEvent extends Command
 {
     /**
@@ -90,7 +93,7 @@ class FetchSakeEvent extends Command
      * @param Collection $prefectures ['県名' => id]の配列
      * @return int
      */
-    private function parsePrefecture(?String $location, Collection $prefectures)
+    private function parsePrefecture($location = null, Collection $prefectures)
     {
         if (is_null($location)) {
             return Prefecture::UNKNOWN;
