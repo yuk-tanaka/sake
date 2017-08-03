@@ -65,20 +65,19 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.3.9/jquery.jscroll.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/2.1.0/jquery.infinitescroll.min.js"></script>
 <script>
-  $('ul.pagination').hide();
-  $(function () {
-    $('.infinite-scroll').jscroll({
-      autoTrigger: true,
-      loadingHtml: '<p>loading…</p>',
-      padding: 0,
-      nextSelector: '.pagination li.active + li a',
-      contentSelector: 'div.infinite-scroll',
-      callback: function () {
-        $('ul.pagination').remove();
-      }
-    });
+  $('.infinite-scroll').infinitescroll({
+    loading: {
+      finished: function () {
+        $('ul.pagination').hide();
+      },
+      finishedMsg: '<div class="end-msg">Congratulations!</div>',
+      msgText: '<div class="center">Loading...</div>'
+    },
+    navSelector: '.pagination',
+    nextSelector: '.pagination li.active + li a',
+    itemSelector: 'div.infinite-scroll'
   });
 </script>
 @endpush
