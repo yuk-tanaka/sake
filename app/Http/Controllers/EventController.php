@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Eloquents\SakeEvent;
+use App\Eloquents\Event;
 use App\Http\Requests\SearchRequest;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    private $sakeEvent;
+    private $event;
 
     private $paginate = 20;
 
     /**
      * EventController constructor.
-     * @param SakeEvent $sakeEvent
+     * @param Event $Event
      */
-    public function __construct(SakeEvent $sakeEvent)
+    public function __construct(Event $event)
     {
-        $this->sakeEvent = $sakeEvent;
+        $this->event = $event;
     }
 
     /**
@@ -30,8 +29,10 @@ class EventController extends Controller
     public function index(SearchRequest $request)
     {
         return view('welcome', [
-            'date' => $request->date,
-            'events' => $this->search($request->date)->with(['prefecture'])->paginate($this->paginate),
+            'date' => $request->date ?? Carbon::today()->format('Y-m-d'),
+            'type' => $request->type,
+            'events' => $this->search($request->type, $request->date)
+                ->with(['prefecture'])->paginate($this->paginate),
         ]);
     }
 
@@ -44,8 +45,9 @@ class EventController extends Controller
     {
         return view('welcome', [
             'area' => $area,
-            'date' => $request->date,
-            'events' => $this->search($request->date)->with(['prefecture'])
+            'date' => $request->date ?? Carbon::today()->format('Y-m-d'),
+            'type' => $request->type,
+            'events' => $this->search($request->type, $request->date)->with(['prefecture'])
                 ->whereHas('prefecture', function ($pref) use ($area) {
                     $pref->$area();
                 })->paginate($this->paginate),
@@ -56,13 +58,19 @@ class EventController extends Controller
      * @param null|string $date
      * @return Builder
      */
-    private function search(?string $date)
+    private function search(?string $type, ?string $date)
     {
+        if ($type === 'sake') {
+            $this->event = $this->event->sake();
+        } elseif ($type === 'beer') {
+            $this->event = $this->event->beer();
+        }
+
         if (is_null($date)) {
-            return $this->sakeEvent->current();
+            return $this->event->current();
         }
 
         //終日の場合、ended_atは翌日00:00:00
-        return $this->sakeEvent->where('ended_at', '>=', Carbon::parse($date));
+        return $this->event->where('ended_at', '>', Carbon::parse($date));
     }
 }

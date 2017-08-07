@@ -9,7 +9,7 @@
           <ul>
             <li><a href="http://nihonshucalendar.com/">日本酒カレンダー</a>のUIがいろいろキツイので突貫で作った。1時間に1回データ同期してます。</li>
             <li>特に許可とかとってないんで怒られたらやめます。</li>
-            <li>そのうち<a href="http://craftbeer-tokyo.info/category/event/">クラフトビール東京</a>あたりの情報もfetchしたいところ。</li>
+            <li>クラフトビールの情報取得先募集中。</li>
             <li>苦情・要望は<a href="https://twitter.com/achel_b8">@achel_b8</a>まで。</li>
           </ul>
         </div>
@@ -21,14 +21,25 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <!-- search -->
-            <form class="form-inline">
-              <label class="sr-only" for="date">date</label>
-              <div class="input-group @if($errors->first('date')) has-error @endif">
-                <div class="input-group-addon"><i class="fa fa-calendar-o"></i></div>
-                <input type="date" id="date" name="date" class="form-control"
-                       value="{{old('date', \Carbon\Carbon::today()->format('Y-m-d'))}}">
+            <form>
+              <div class="row">
+                <div class="col-sm-4">
+                  <label class="sr-only" for="date">date</label>
+                  <div class="input-group @if($errors->first('date')) has-error @endif">
+                    <div class="input-group-addon"><i class="fa fa-calendar-o"></i></div>
+                    <input type="date" id="date" name="date" class="form-control"
+                           value="{{old('date', $date)}}">
+                  </div>
+                </div>
+                <div class="col-sm-8">
+                  <label class="sr-only" for="select">select</label>
+                  <select id="select" name="type">
+                    <option value="all" @if(is_null($type) || $type === 'all' ) selected @endif>すべて</option>
+                    <option value="sake" @if($type === 'sake') selected @endif>日本酒</option>
+                    <option value="beer" @if($type === 'beer') selected @endif>クラフトビール</option>
+                  </select>
+                </div>
               </div>
-              <button type="submit" class="btn btn-primary">日付で検索</button>
             </form>
           </div>
           <!-- list -->
@@ -39,9 +50,9 @@
                 <span class="label label-danger">{{$event->prefecture->name}}</span>
                 <span class="label {{$event->color}}">{{$event->type}}</span>
                 @if($event->is_recommended)
-                  <span class="label label-success">オススメ</span>
+                  <span class="label label-warning">オススメ</span>
                 @endif
-                <h4><a href="http://nihonshucalendar.com/show_event.php?id={{$event->code}}">{{$event->summary}}</a>
+                <h4><a href="{{$event->url}}">{{$event->summary}}</a>
 
                 </h4>
                 <h4>
@@ -55,7 +66,7 @@
                 </p>
                 <hr>
               @endforeach
-              {{$events->appends(['date' => $date ?? null])->links()}}
+              {{$events->appends(['date' => $date, 'type' => $type])->links()}}
             </div>
           </div>
         </div>
@@ -64,6 +75,10 @@
   </div>
 
 @endsection
+
+@push('styles')
+<link href="{{ asset('vendor/quick-select/dist/css/quickselect.css') }}" rel="stylesheet">
+@endpush
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/2.1.0/jquery.infinitescroll.min.js"></script>
@@ -83,6 +98,15 @@
     navSelector: '.pagination',
     nextSelector: '.pagination li.active + li a',
     itemSelector: 'div.infinite-scroll'
+  });
+</script>
+
+<script src="{{asset('vendor/quick-select/dist/js/jquery.quickselect.min.js')}}"></script>
+<script>
+  $('#select').quickselect({
+    activeButtonClass: 'btn-primary active',
+    buttonClass: 'btn btn-default',
+    breakOutAll: true
   });
 </script>
 

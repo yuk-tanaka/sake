@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.4.30 on 2017-07-31.
+ * Generated for Laravel 5.4.30 on 2017-08-07.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -11554,6 +11554,393 @@ namespace Illuminate\Support\Facades {
  
 }
 
+namespace Weidner\Goutte { 
+
+    class GoutteFacade {
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setClient($client)
+        {
+            return \Goutte\Client::setClient($client);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getClient()
+        {
+            return \Goutte\Client::getClient();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setHeader($name, $value)
+        {
+            return \Goutte\Client::setHeader($name, $value);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function removeHeader($name)
+        {
+            return \Goutte\Client::removeHeader($name);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function resetHeaders()
+        {
+            return \Goutte\Client::resetHeaders();
+        }
+        
+        /**
+         * Restarts the client.
+         * 
+         * It flushes history and all cookies.
+         *
+         * @static 
+         */ 
+        public static function restart()
+        {
+            return \Goutte\Client::restart();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setAuth($user, $password = '', $type = 'basic')
+        {
+            return \Goutte\Client::setAuth($user, $password, $type);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function resetAuth()
+        {
+            return \Goutte\Client::resetAuth();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function addPostFields($formParams, $multipart, $arrayName = '')
+        {
+            return \Goutte\Client::addPostFields($formParams, $multipart, $arrayName);
+        }
+        
+        /**
+         * Sets whether to automatically follow redirects or not.
+         *
+         * @param bool $followRedirect Whether to follow redirects
+         * @static 
+         */ 
+        public static function followRedirects($followRedirect = true)
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::followRedirects($followRedirect);
+        }
+        
+        /**
+         * Returns whether client automatically follows redirects or not.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function isFollowingRedirects()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::isFollowingRedirects();
+        }
+        
+        /**
+         * Sets the maximum number of requests that crawler can follow.
+         *
+         * @param int $maxRedirects
+         * @static 
+         */ 
+        public static function setMaxRedirects($maxRedirects)
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::setMaxRedirects($maxRedirects);
+        }
+        
+        /**
+         * Returns the maximum number of requests that crawler can follow.
+         *
+         * @return int 
+         * @static 
+         */ 
+        public static function getMaxRedirects()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getMaxRedirects();
+        }
+        
+        /**
+         * Sets the insulated flag.
+         *
+         * @param bool $insulated Whether to insulate the requests or not
+         * @throws \RuntimeException When Symfony Process Component is not installed
+         * @static 
+         */ 
+        public static function insulate($insulated = true)
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::insulate($insulated);
+        }
+        
+        /**
+         * Sets server parameters.
+         *
+         * @param array $server An array of server parameters
+         * @static 
+         */ 
+        public static function setServerParameters($server)
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::setServerParameters($server);
+        }
+        
+        /**
+         * Sets single server parameter.
+         *
+         * @param string $key A key of the parameter
+         * @param string $value A value of the parameter
+         * @static 
+         */ 
+        public static function setServerParameter($key, $value)
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::setServerParameter($key, $value);
+        }
+        
+        /**
+         * Gets single server parameter for specified key.
+         *
+         * @param string $key A key of the parameter to get
+         * @param string $default A default value when key is undefined
+         * @return string A value of the parameter
+         * @static 
+         */ 
+        public static function getServerParameter($key, $default = '')
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getServerParameter($key, $default);
+        }
+        
+        /**
+         * Returns the History instance.
+         *
+         * @return \Symfony\Component\BrowserKit\History A History instance
+         * @static 
+         */ 
+        public static function getHistory()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getHistory();
+        }
+        
+        /**
+         * Returns the CookieJar instance.
+         *
+         * @return \Symfony\Component\BrowserKit\CookieJar A CookieJar instance
+         * @static 
+         */ 
+        public static function getCookieJar()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getCookieJar();
+        }
+        
+        /**
+         * Returns the current Crawler instance.
+         *
+         * @return \Symfony\Component\BrowserKit\Crawler|null A Crawler instance
+         * @static 
+         */ 
+        public static function getCrawler()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getCrawler();
+        }
+        
+        /**
+         * Returns the current BrowserKit Response instance.
+         *
+         * @return \Response|null A BrowserKit Response instance
+         * @static 
+         */ 
+        public static function getInternalResponse()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getInternalResponse();
+        }
+        
+        /**
+         * Returns the current origin response instance.
+         * 
+         * The origin response is the response instance that is returned
+         * by the code that handles requests.
+         *
+         * @return object|null A response instance
+         * @see doRequest()
+         * @static 
+         */ 
+        public static function getResponse()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getResponse();
+        }
+        
+        /**
+         * Returns the current BrowserKit Request instance.
+         *
+         * @return \Request|null A BrowserKit Request instance
+         * @static 
+         */ 
+        public static function getInternalRequest()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getInternalRequest();
+        }
+        
+        /**
+         * Returns the current origin Request instance.
+         * 
+         * The origin request is the request instance that is sent
+         * to the code that handles requests.
+         *
+         * @return object|null A Request instance
+         * @see doRequest()
+         * @static 
+         */ 
+        public static function getRequest()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::getRequest();
+        }
+        
+        /**
+         * Clicks on a given link.
+         *
+         * @param \Symfony\Component\BrowserKit\Link $link A Link instance
+         * @return \Symfony\Component\BrowserKit\Crawler 
+         * @static 
+         */ 
+        public static function click($link)
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::click($link);
+        }
+        
+        /**
+         * Submits a form.
+         *
+         * @param \Symfony\Component\BrowserKit\Form $form A Form instance
+         * @param array $values An array of form field values
+         * @return \Symfony\Component\BrowserKit\Crawler 
+         * @static 
+         */ 
+        public static function submit($form, $values = array())
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::submit($form, $values);
+        }
+        
+        /**
+         * Calls a URI.
+         *
+         * @param string $method The request method
+         * @param string $uri The URI to fetch
+         * @param array $parameters The Request parameters
+         * @param array $files The files
+         * @param array $server The server parameters (HTTP headers are referenced with a HTTP_ prefix as PHP does)
+         * @param string $content The raw body data
+         * @param bool $changeHistory Whether to update the history or not (only used internally for back(), forward(), and reload())
+         * @return \Symfony\Component\BrowserKit\Crawler 
+         * @static 
+         */ 
+        public static function request($method, $uri, $parameters = array(), $files = array(), $server = array(), $content = null, $changeHistory = true)
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
+        }
+        
+        /**
+         * Goes back in the browser history.
+         *
+         * @return \Symfony\Component\BrowserKit\Crawler 
+         * @static 
+         */ 
+        public static function back()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::back();
+        }
+        
+        /**
+         * Goes forward in the browser history.
+         *
+         * @return \Symfony\Component\BrowserKit\Crawler 
+         * @static 
+         */ 
+        public static function forward()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::forward();
+        }
+        
+        /**
+         * Reloads the current browser.
+         *
+         * @return \Symfony\Component\BrowserKit\Crawler 
+         * @static 
+         */ 
+        public static function reload()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::reload();
+        }
+        
+        /**
+         * Follow redirects?
+         *
+         * @return \Symfony\Component\BrowserKit\Crawler 
+         * @throws \LogicException If request was not a redirect
+         * @static 
+         */ 
+        public static function followRedirect()
+        {
+            //Method inherited from \Symfony\Component\BrowserKit\Client            
+            return \Goutte\Client::followRedirect();
+        }
+         
+    }
+ 
+}
+
 
 namespace  { 
 
@@ -13617,6 +14004,8 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class Goutte extends \Weidner\Goutte\GoutteFacade {}
  
 }
 

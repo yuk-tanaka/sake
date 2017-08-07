@@ -57,6 +57,8 @@ class FetchSakeEvent extends Command
      */
     public function handle()
     {
+        $this->prefecture = $this->prefecture->pluck('id', 'name');
+
         $events = collect($this->fetch())->sortBy('startDateTime');
 
         $this->save($events);
@@ -88,11 +90,11 @@ class FetchSakeEvent extends Command
     }
 
     /**
-     * 住所から都道府県を判定して都道府県番号を返す
-     * @param string|null $location
-     * @param Collection $prefectures ['県名' => id]の配列
-     * @return int
-     */
+ * 住所から都道府県を判定して都道府県番号を返す
+ * @param string|null $location
+ * @param Collection $prefectures ['県名' => id]の配列
+ * @return int
+ */
     private function parsePrefecture($location = null, Collection $prefectures)
     {
         if (is_null($location)) {
@@ -113,15 +115,14 @@ class FetchSakeEvent extends Command
      */
     private function save(Collection $events)
     {
-        $prefectures = $this->prefecture->pluck('id', 'name');
-
         foreach ($events as $event) {
             $message[] = $this->sakeEvent->updateOrCreate(
                 ['code' => $event['id']],
                 [
                     'code' => $event['id'],
+                    'url' => 'http://nihonshucalendar.com/show_event.php?id=' . $event['id'],
                     'summary' => $event['summary'],
-                    'prefecture_id' => $this->parsePrefecture($event['location'], $prefectures),
+                    'prefecture_id' => $this->parsePrefecture($event['location'], $this->prefecture),
                     'location' => $event['location'],
                     'description' => $event['description'],
                     'started_at' => Carbon::parse($event['startDateTime']),

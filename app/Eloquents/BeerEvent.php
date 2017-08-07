@@ -2,7 +2,7 @@
 
 namespace App\Eloquents;
 
-class SakeEvent extends Event
+class BeerEvent extends Event
 {
-
+    protected $typeName = 'クラフトビール';
 }

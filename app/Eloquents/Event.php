@@ -27,6 +27,7 @@ class Event extends Model
 
     protected $fillable = [
         'code',
+        'url',
         'summary',
         'prefecture_id',
         'location',
@@ -80,7 +81,23 @@ class Event extends Model
      */
     public function scopeCurrent()
     {
-        return $this->where('ended_at', '>=', Carbon::today());
+        return $this->where('ended_at', '>', Carbon::today());
+    }
+
+    /**
+     * @return Builder
+     */
+    public function scopeSake()
+    {
+        return SakeEvent::query();
+    }
+
+    /**
+     * @return Builder
+     */
+    public function scopeBeer()
+    {
+        return BeerEvent::query();
     }
 
     /**
@@ -92,6 +109,8 @@ class Event extends Model
         switch ($this->type) {
             case '日本酒カレンダー' :
                 return 'label-primary';
+            case 'クラフトビール' :
+                return 'label-success';
             default:
                 return 'label-default';
         }
@@ -113,11 +132,17 @@ class Event extends Model
             return $this->started_at->formatLocalized('%Y年%m月%d日(%a)');
         }
 
-        $start = $this->started_at->formatLocalized('%Y年%m月%d日(%a) %H:%M');
+        if ($this->is_all_day) {
+            $start = $this->started_at->formatLocalized('%Y年%m月%d日(%a)');
+        } else {
+            $start = $this->started_at->formatLocalized('%Y年%m月%d日(%a) %H:%M');
+        }
 
-        //終了日が同日なら日付表記を省略
         if ($this->isSameDay()) {
+            //終了日が同日なら日付表記を省略
             $end = $this->ended_at->format('H:i');
+        } elseif ($this->is_all_day) {
+            $end = $this->ended_at->formatLocalized('%m月%d日(%a)');
         } else {
             $end = $this->ended_at->formatLocalized('%m月%d日(%a) %H:%M');
         }

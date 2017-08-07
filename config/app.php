@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Weidner\Goutte\GoutteServiceProvider::class,
 
     ],
 
@@ -228,7 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'BootForm' => AdamWathan\BootForms\Facades\BootForm::class,
+        'Goutte' => Weidner\Goutte\GoutteFacade::class,
 
     ],
 

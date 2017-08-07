@@ -25,6 +25,7 @@ class SearchRequest extends FormRequest
     {
         return [
             'date' => 'nullable|date',
+            'type' => 'nullable|in:all,sake,beer',
         ];
     }
 }
